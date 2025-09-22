@@ -66,22 +66,42 @@ class UserController extends Controller
 
         // Handle avatar upload
         if ($request->hasFile('avatar')) {
+            // Ensure avatars directory exists
+            $avatarsDir = storage_path('app/public/avatars');
+            if (!is_dir($avatarsDir)) {
+                mkdir($avatarsDir, 0755, true);
+            }
+            
             $avatar = $request->file('avatar');
             $avatarName = time() . '_' . $avatar->getClientOriginalName();
             
             // Check original file size
             $originalSizeKB = $avatar->getSize() / 1024;
             
-            // Compress image without losing quality
-            $this->compressImage($avatar, storage_path('app/public/avatars/' . $avatarName), 500);
-            
-            // Check compressed file size
-            $compressedSizeKB = filesize(storage_path('app/public/avatars/' . $avatarName)) / 1024;
+            // Try to compress image if GD extension is available
+            if (extension_loaded('gd')) {
+                try {
+                    $this->compressImage($avatar, storage_path('app/public/avatars/' . $avatarName), 500);
+                    
+                    // Check compressed file size
+                    $compressedSizeKB = filesize(storage_path('app/public/avatars/' . $avatarName)) / 1024;
+                    
+                    // Log compression info
+                    \Log::info("Avatar compressed: {$originalSizeKB}KB -> {$compressedSizeKB}KB");
+                } catch (\Exception $e) {
+                    \Log::warning("Avatar compression failed: " . $e->getMessage());
+                    // Fallback to copy without compression
+                    $this->copyImageWithoutCompression($avatar, storage_path('app/public/avatars/' . $avatarName));
+                    $compressedSizeKB = $originalSizeKB;
+                }
+            } else {
+                // GD extension not available, use copy without compression
+                \Log::warning("GD extension not available, copying avatar without compression");
+                $this->copyImageWithoutCompression($avatar, storage_path('app/public/avatars/' . $avatarName));
+                $compressedSizeKB = $originalSizeKB;
+            }
             
             $data['avatar'] = $avatarName;
-            
-            // Log compression info
-            \Log::info("Image compressed: {$originalSizeKB}KB -> {$compressedSizeKB}KB");
         }
 
         User::create($data);
@@ -162,6 +182,12 @@ class UserController extends Controller
 
             // Handle avatar upload
             if ($request->hasFile('avatar')) {
+                // Ensure avatars directory exists
+                $avatarsDir = storage_path('app/public/avatars');
+                if (!is_dir($avatarsDir)) {
+                    mkdir($avatarsDir, 0755, true);
+                }
+                
                 // Delete old avatar if exists
                 if ($user->avatar && file_exists(storage_path('app/public/avatars/' . $user->avatar))) {
                     unlink(storage_path('app/public/avatars/' . $user->avatar));
@@ -173,16 +199,30 @@ class UserController extends Controller
                 // Check original file size
                 $originalSizeKB = $avatar->getSize() / 1024;
                 
-                // Compress image without losing quality
-                $this->compressImage($avatar, storage_path('app/public/avatars/' . $avatarName), 500);
-                
-                // Check compressed file size
-                $compressedSizeKB = filesize(storage_path('app/public/avatars/' . $avatarName)) / 1024;
+                // Try to compress image if GD extension is available
+                if (extension_loaded('gd')) {
+                    try {
+                        $this->compressImage($avatar, storage_path('app/public/avatars/' . $avatarName), 500);
+                        
+                        // Check compressed file size
+                        $compressedSizeKB = filesize(storage_path('app/public/avatars/' . $avatarName)) / 1024;
+                        
+                        // Log compression info
+                        \Log::info("Avatar compressed: {$originalSizeKB}KB -> {$compressedSizeKB}KB");
+                    } catch (\Exception $e) {
+                        \Log::warning("Avatar compression failed: " . $e->getMessage());
+                        // Fallback to copy without compression
+                        $this->copyImageWithoutCompression($avatar, storage_path('app/public/avatars/' . $avatarName));
+                        $compressedSizeKB = $originalSizeKB;
+                    }
+                } else {
+                    // GD extension not available, use copy without compression
+                    \Log::warning("GD extension not available, copying avatar without compression");
+                    $this->copyImageWithoutCompression($avatar, storage_path('app/public/avatars/' . $avatarName));
+                    $compressedSizeKB = $originalSizeKB;
+                }
                 
                 $data['avatar'] = $avatarName;
-                
-                // Log compression info
-                \Log::info("Image compressed: {$originalSizeKB}KB -> {$compressedSizeKB}KB");
             }
 
             $user->update($data);
@@ -249,15 +289,51 @@ class UserController extends Controller
     }
 
     /**
+     * Copy image without compression (fallback method)
+     */
+    private function copyImageWithoutCompression($image, $destination)
+    {
+        $imagePath = $image->getPathname();
+        
+        // Create directory if it doesn't exist
+        $destinationDir = dirname($destination);
+        if (!is_dir($destinationDir)) {
+            if (!mkdir($destinationDir, 0755, true)) {
+                throw new \Exception('ไม่สามารถสร้างโฟลเดอร์ได้: ' . $destinationDir);
+            }
+        }
+        
+        // Simply copy the file to destination
+        if (!copy($imagePath, $destination)) {
+            throw new \Exception('ไม่สามารถคัดลอกไฟล์รูปภาพได้');
+        }
+        
+        \Log::info("Avatar copied without compression: " . basename($destination));
+    }
+
+    /**
      * Compress image without losing quality
      */
     private function compressImage($image, $destination, $maxSizeKB)
     {
+        // Check if GD extension is loaded
+        if (!extension_loaded('gd')) {
+            throw new \Exception('PHP GD extension ไม่ได้ถูกติดตั้ง กรุณาติดตั้ง php-gd extension');
+        }
+
+        // Create directory if it doesn't exist
+        $destinationDir = dirname($destination);
+        if (!is_dir($destinationDir)) {
+            if (!mkdir($destinationDir, 0755, true)) {
+                throw new \Exception('ไม่สามารถสร้างโฟลเดอร์ได้: ' . $destinationDir);
+            }
+        }
+
         $imagePath = $image->getPathname();
         $imageInfo = getimagesize($imagePath);
         
         if (!$imageInfo) {
-            throw new \Exception('Invalid image file');
+            throw new \Exception('ไม่สามารถอ่านไฟล์รูปภาพได้');
         }
         
         $mimeType = $imageInfo['mime'];
@@ -265,18 +341,32 @@ class UserController extends Controller
         $height = $imageInfo[1];
         
         // Create image resource based on type
+        $sourceImage = null;
         switch ($mimeType) {
             case 'image/jpeg':
+                if (!function_exists('imagecreatefromjpeg')) {
+                    throw new \Exception('ฟังก์ชัน imagecreatefromjpeg ไม่พร้อมใช้งาน');
+                }
                 $sourceImage = imagecreatefromjpeg($imagePath);
                 break;
             case 'image/png':
+                if (!function_exists('imagecreatefrompng')) {
+                    throw new \Exception('ฟังก์ชัน imagecreatefrompng ไม่พร้อมใช้งาน');
+                }
                 $sourceImage = imagecreatefrompng($imagePath);
                 break;
             case 'image/gif':
+                if (!function_exists('imagecreatefromgif')) {
+                    throw new \Exception('ฟังก์ชัน imagecreatefromgif ไม่พร้อมใช้งาน');
+                }
                 $sourceImage = imagecreatefromgif($imagePath);
                 break;
             default:
-                throw new \Exception('Unsupported image type');
+                throw new \Exception('รองรับเฉพาะไฟล์ JPEG, PNG และ GIF เท่านั้น');
+        }
+
+        if (!$sourceImage) {
+            throw new \Exception('ไม่สามารถสร้าง image resource ได้');
         }
         
         // Calculate new dimensions if needed
@@ -291,6 +381,9 @@ class UserController extends Controller
         }
         
         // Create new image
+        if (!function_exists('imagecreatetruecolor')) {
+            throw new \Exception('ฟังก์ชัน imagecreatetruecolor ไม่พร้อมใช้งาน');
+        }
         $newImage = imagecreatetruecolor($newWidth, $newHeight);
         
         // Preserve transparency for PNG
@@ -311,14 +404,23 @@ class UserController extends Controller
         do {
             switch ($mimeType) {
                 case 'image/jpeg':
+                    if (!function_exists('imagejpeg')) {
+                        throw new \Exception('ฟังก์ชัน imagejpeg ไม่พร้อมใช้งาน');
+                    }
                     imagejpeg($newImage, $tempFile, $quality);
                     break;
                 case 'image/png':
+                    if (!function_exists('imagepng')) {
+                        throw new \Exception('ฟังก์ชัน imagepng ไม่พร้อมใช้งาน');
+                    }
                     // PNG compression level (0-9, 9 = highest compression)
                     $compression = intval((100 - $quality) / 10);
                     imagepng($newImage, $tempFile, $compression);
                     break;
                 case 'image/gif':
+                    if (!function_exists('imagegif')) {
+                        throw new \Exception('ฟังก์ชัน imagegif ไม่พร้อมใช้งาน');
+                    }
                     imagegif($newImage, $tempFile);
                     break;
             }
