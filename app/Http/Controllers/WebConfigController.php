@@ -77,14 +77,14 @@ class WebConfigController extends Controller
                     \Log::info("Logo compressed: {$originalSizeKB}KB -> {$compressedSizeKB}KB");
                 } catch (\Exception $e) {
                     \Log::warning("Image compression failed: " . $e->getMessage());
-                    // Fallback to simple upload without compression
-                    $logo->move(storage_path('app/public/logos/'), $logoName);
+                    // Fallback to copy without compression
+                    $this->copyImageWithoutCompression($logo, storage_path('app/public/logos/' . $logoName));
                     $compressedSizeKB = $originalSizeKB;
                 }
             } else {
-                // GD extension not available, use simple upload
-                \Log::warning("GD extension not available, uploading image without compression");
-                $logo->move(storage_path('app/public/logos/'), $logoName);
+                // GD extension not available, use copy without compression
+                \Log::warning("GD extension not available, copying image without compression");
+                $this->copyImageWithoutCompression($logo, storage_path('app/public/logos/' . $logoName));
                 $compressedSizeKB = $originalSizeKB;
             }
             
@@ -102,6 +102,21 @@ class WebConfigController extends Controller
             'success' => true,
             'message' => $message
         ]);
+    }
+
+    /**
+     * Copy image without compression (fallback method)
+     */
+    private function copyImageWithoutCompression($image, $destination)
+    {
+        $imagePath = $image->getPathname();
+        
+        // Simply copy the file to destination
+        if (!copy($imagePath, $destination)) {
+            throw new \Exception('ไม่สามารถคัดลอกไฟล์รูปภาพได้');
+        }
+        
+        \Log::info("Image copied without compression: " . basename($destination));
     }
 
     /**
