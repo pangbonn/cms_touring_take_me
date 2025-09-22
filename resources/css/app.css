@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ใช้ฟอนต์ Sarabun เป็นฟอนต์หลัก */
+body {
+    font-family: 'Sarabun', sans-serif;
+}
+
+/* กำหนดฟอนต์ Sarabun สำหรับองค์ประกอบต่างๆ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Sarabun', sans-serif;
+}
+
+p, span, div, a, button, input, textarea, select {
+    font-family: 'Sarabun', sans-serif;
+}
