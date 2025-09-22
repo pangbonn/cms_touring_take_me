@@ -65,16 +65,30 @@ class WebConfigController extends Controller
             // Check original file size
             $originalSizeKB = $logo->getSize() / 1024;
             
-            // Compress image without losing quality
-            $this->compressImage($logo, storage_path('app/public/logos/' . $logoName), 500);
-            
-            // Check compressed file size
-            $compressedSizeKB = filesize(storage_path('app/public/logos/' . $logoName)) / 1024;
+            // Try to compress image if GD extension is available
+            if (extension_loaded('gd')) {
+                try {
+                    $this->compressImage($logo, storage_path('app/public/logos/' . $logoName), 500);
+                    
+                    // Check compressed file size
+                    $compressedSizeKB = filesize(storage_path('app/public/logos/' . $logoName)) / 1024;
+                    
+                    // Log compression info
+                    \Log::info("Logo compressed: {$originalSizeKB}KB -> {$compressedSizeKB}KB");
+                } catch (\Exception $e) {
+                    \Log::warning("Image compression failed: " . $e->getMessage());
+                    // Fallback to simple upload without compression
+                    $logo->move(storage_path('app/public/logos/'), $logoName);
+                    $compressedSizeKB = $originalSizeKB;
+                }
+            } else {
+                // GD extension not available, use simple upload
+                \Log::warning("GD extension not available, uploading image without compression");
+                $logo->move(storage_path('app/public/logos/'), $logoName);
+                $compressedSizeKB = $originalSizeKB;
+            }
             
             $data['site_logo'] = $logoName;
-            
-            // Log compression info
-            \Log::info("Logo compressed: {$originalSizeKB}KB -> {$compressedSizeKB}KB");
         }
 
         $config->update($data);
@@ -95,6 +109,11 @@ class WebConfigController extends Controller
      */
     private function compressImage($image, $destination, $maxSizeKB)
     {
+        // Check if GD extension is loaded
+        if (!extension_loaded('gd')) {
+            throw new \Exception('PHP GD extension ไม่ได้ถูกติดตั้ง กรุณาติดตั้ง php-gd extension');
+        }
+
         $imagePath = $image->getPathname();
         $imageInfo = getimagesize($imagePath);
         
@@ -107,15 +126,26 @@ class WebConfigController extends Controller
         $mimeType = $imageInfo['mime'];
 
         // Create image resource based on mime type
+        $sourceImage = null;
         switch ($mimeType) {
             case 'image/jpeg':
+                if (!function_exists('imagecreatefromjpeg')) {
+                    throw new \Exception('ฟังก์ชัน imagecreatefromjpeg ไม่พร้อมใช้งาน');
+                }
                 $sourceImage = imagecreatefromjpeg($imagePath);
                 break;
             case 'image/png':
+                if (!function_exists('imagecreatefrompng')) {
+                    throw new \Exception('ฟังก์ชัน imagecreatefrompng ไม่พร้อมใช้งาน');
+                }
                 $sourceImage = imagecreatefrompng($imagePath);
                 break;
             default:
                 throw new \Exception('รองรับเฉพาะไฟล์ JPEG และ PNG เท่านั้น');
+        }
+
+        if (!$sourceImage) {
+            throw new \Exception('ไม่สามารถสร้าง image resource ได้');
         }
 
         // Resize if image is too large (e.g., > 800px)
@@ -129,6 +159,9 @@ class WebConfigController extends Controller
         }
 
         // Create new image
+        if (!function_exists('imagecreatetruecolor')) {
+            throw new \Exception('ฟังก์ชัน imagecreatetruecolor ไม่พร้อมใช้งาน');
+        }
         $newImage = imagecreatetruecolor($newWidth, $newHeight);
         
         // Preserve transparency for PNG
@@ -148,8 +181,14 @@ class WebConfigController extends Controller
         
         do {
             if ($mimeType === 'image/jpeg') {
+                if (!function_exists('imagejpeg')) {
+                    throw new \Exception('ฟังก์ชัน imagejpeg ไม่พร้อมใช้งาน');
+                }
                 imagejpeg($newImage, $tempFile, $quality);
             } else {
+                if (!function_exists('imagepng')) {
+                    throw new \Exception('ฟังก์ชัน imagepng ไม่พร้อมใช้งาน');
+                }
                 imagepng($newImage, $tempFile, 9 - intval($quality / 10));
             }
             
