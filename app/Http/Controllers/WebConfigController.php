@@ -54,6 +54,12 @@ class WebConfigController extends Controller
 
         // Handle logo upload
         if ($request->hasFile('site_logo')) {
+            // Ensure logos directory exists
+            $logosDir = storage_path('app/public/logos');
+            if (!is_dir($logosDir)) {
+                mkdir($logosDir, 0755, true);
+            }
+            
             // Delete old logo if exists
             if ($config->site_logo && file_exists(storage_path('app/public/logos/' . $config->site_logo))) {
                 unlink(storage_path('app/public/logos/' . $config->site_logo));
@@ -111,6 +117,14 @@ class WebConfigController extends Controller
     {
         $imagePath = $image->getPathname();
         
+        // Create directory if it doesn't exist
+        $destinationDir = dirname($destination);
+        if (!is_dir($destinationDir)) {
+            if (!mkdir($destinationDir, 0755, true)) {
+                throw new \Exception('ไม่สามารถสร้างโฟลเดอร์ได้: ' . $destinationDir);
+            }
+        }
+        
         // Simply copy the file to destination
         if (!copy($imagePath, $destination)) {
             throw new \Exception('ไม่สามารถคัดลอกไฟล์รูปภาพได้');
@@ -127,6 +141,14 @@ class WebConfigController extends Controller
         // Check if GD extension is loaded
         if (!extension_loaded('gd')) {
             throw new \Exception('PHP GD extension ไม่ได้ถูกติดตั้ง กรุณาติดตั้ง php-gd extension');
+        }
+
+        // Create directory if it doesn't exist
+        $destinationDir = dirname($destination);
+        if (!is_dir($destinationDir)) {
+            if (!mkdir($destinationDir, 0755, true)) {
+                throw new \Exception('ไม่สามารถสร้างโฟลเดอร์ได้: ' . $destinationDir);
+            }
         }
 
         $imagePath = $image->getPathname();
