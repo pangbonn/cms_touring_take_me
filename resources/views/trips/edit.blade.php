@@ -67,6 +67,88 @@
                                 @enderror
                             </div>
 
+                            <!-- จังหวัด -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold">จังหวัด</span>
+                                </label>
+                                <select name="location" class="select select-bordered @error('location') select-error @enderror">
+                                    <option value="">เลือกจังหวัด</option>
+                                    <option value="กรุงเทพมหานคร" {{ old('location', $trip->location) == 'กรุงเทพมหานคร' ? 'selected' : '' }}>กรุงเทพมหานคร</option>
+                                    <option value="เชียงใหม่" {{ old('location', $trip->location) == 'เชียงใหม่' ? 'selected' : '' }}>เชียงใหม่</option>
+                                    <option value="เชียงราย" {{ old('location', $trip->location) == 'เชียงราย' ? 'selected' : '' }}>เชียงราย</option>
+                                    <option value="แม่ฮ่องสอน" {{ old('location', $trip->location) == 'แม่ฮ่องสอน' ? 'selected' : '' }}>แม่ฮ่องสอน</option>
+                                    <option value="ลำปาง" {{ old('location', $trip->location) == 'ลำปาง' ? 'selected' : '' }}>ลำปาง</option>
+                                    <option value="ลำพูน" {{ old('location', $trip->location) == 'ลำพูน' ? 'selected' : '' }}>ลำพูน</option>
+                                    <option value="น่าน" {{ old('location', $trip->location) == 'น่าน' ? 'selected' : '' }}>น่าน</option>
+                                    <option value="พะเยา" {{ old('location', $trip->location) == 'พะเยา' ? 'selected' : '' }}>พะเยา</option>
+                                    <option value="แพร่" {{ old('location', $trip->location) == 'แพร่' ? 'selected' : '' }}>แพร่</option>
+                                    <option value="อุตรดิตถ์" {{ old('location', $trip->location) == 'อุตรดิตถ์' ? 'selected' : '' }}>อุตรดิตถ์</option>
+                                    <option value="ตาก" {{ old('location', $trip->location) == 'ตาก' ? 'selected' : '' }}>ตาก</option>
+                                    <option value="สุโขทัย" {{ old('location', $trip->location) == 'สุโขทัย' ? 'selected' : '' }}>สุโขทัย</option>
+                                    <option value="พิษณุโลก" {{ old('location', $trip->location) == 'พิษณุโลก' ? 'selected' : '' }}>พิษณุโลก</option>
+                                    <option value="เพชรบูรณ์" {{ old('location', $trip->location) == 'เพชรบูรณ์' ? 'selected' : '' }}>เพชรบูรณ์</option>
+                                    <option value="กำแพงเพชร" {{ old('location', $trip->location) == 'กำแพงเพชร' ? 'selected' : '' }}>กำแพงเพชร</option>
+                                    <option value="นครสวรรค์" {{ old('location', $trip->location) == 'นครสวรรค์' ? 'selected' : '' }}>นครสวรรค์</option>
+                                    <option value="อุทัยธานี" {{ old('location', $trip->location) == 'อุทัยธานี' ? 'selected' : '' }}>อุทัยธานี</option>
+                                    <option value="ชัยนาท" {{ old('location', $trip->location) == 'ชัยนาท' ? 'selected' : '' }}>ชัยนาท</option>
+                                    <option value="ลพบุรี" {{ old('location', $trip->location) == 'ลพบุรี' ? 'selected' : '' }}>ลพบุรี</option>
+                                    <option value="สิงห์บุรี" {{ old('location', $trip->location) == 'สิงห์บุรี' ? 'selected' : '' }}>สิงห์บุรี</option>
+                                    <option value="อ่างทอง" {{ old('location', $trip->location) == 'อ่างทอง' ? 'selected' : '' }}>อ่างทอง</option>
+                                    <option value="พระนครศรีอยุธยา" {{ old('location', $trip->location) == 'พระนครศรีอยุธยา' ? 'selected' : '' }}>พระนครศรีอยุธยา</option>
+                                    <option value="สระบุรี" {{ old('location', $trip->location) == 'สระบุรี' ? 'selected' : '' }}>สระบุรี</option>
+                                    <option value="นครปฐม" {{ old('location', $trip->location) == 'นครปฐม' ? 'selected' : '' }}>นครปฐม</option>
+                                    <option value="สมุทรสาคร" {{ old('location', $trip->location) == 'สมุทรสาคร' ? 'selected' : '' }}>สมุทรสาคร</option>
+                                    <option value="สมุทรสงคราม" {{ old('location', $trip->location) == 'สมุทรสงคราม' ? 'selected' : '' }}>สมุทรสงคราม</option>
+                                    <option value="สมุทรปราการ" {{ old('location', $trip->location) == 'สมุทรปราการ' ? 'selected' : '' }}>สมุทรปราการ</option>
+                                    <option value="นนทบุรี" {{ old('location', $trip->location) == 'นนทบุรี' ? 'selected' : '' }}>นนทบุรี</option>
+                                    <option value="ปทุมธานี" {{ old('location', $trip->location) == 'ปทุมธานี' ? 'selected' : '' }}>ปทุมธานี</option>
+                                    <option value="นครนายก" {{ old('location', $trip->location) == 'นครนายก' ? 'selected' : '' }}>นครนายก</option>
+                                    <option value="ราชบุรี" {{ old('location', $trip->location) == 'ราชบุรี' ? 'selected' : '' }}>ราชบุรี</option>
+                                    <option value="กาญจนบุรี" {{ old('location', $trip->location) == 'กาญจนบุรี' ? 'selected' : '' }}>กาญจนบุรี</option>
+                                    <option value="สุพรรณบุรี" {{ old('location', $trip->location) == 'สุพรรณบุรี' ? 'selected' : '' }}>สุพรรณบุรี</option>
+                                    <option value="เพชรบุรี" {{ old('location', $trip->location) == 'เพชรบุรี' ? 'selected' : '' }}>เพชรบุรี</option>
+                                    <option value="ประจวบคีรีขันธ์" {{ old('location', $trip->location) == 'ประจวบคีรีขันธ์' ? 'selected' : '' }}>ประจวบคีรีขันธ์</option>
+                                    <option value="ชุมพร" {{ old('location', $trip->location) == 'ชุมพร' ? 'selected' : '' }}>ชุมพร</option>
+                                    <option value="ระนอง" {{ old('location', $trip->location) == 'ระนอง' ? 'selected' : '' }}>ระนอง</option>
+                                    <option value="สุราษฎร์ธานี" {{ old('location', $trip->location) == 'สุราษฎร์ธานี' ? 'selected' : '' }}>สุราษฎร์ธานี</option>
+                                    <option value="นครศรีธรรมราช" {{ old('location', $trip->location) == 'นครศรีธรรมราช' ? 'selected' : '' }}>นครศรีธรรมราช</option>
+                                    <option value="กระบี่" {{ old('location', $trip->location) == 'กระบี่' ? 'selected' : '' }}>กระบี่</option>
+                                    <option value="พังงา" {{ old('location', $trip->location) == 'พังงา' ? 'selected' : '' }}>พังงา</option>
+                                    <option value="ภูเก็ต" {{ old('location', $trip->location) == 'ภูเก็ต' ? 'selected' : '' }}>ภูเก็ต</option>
+                                    <option value="ตรัง" {{ old('location', $trip->location) == 'ตรัง' ? 'selected' : '' }}>ตรัง</option>
+                                    <option value="สตูล" {{ old('location', $trip->location) == 'สตูล' ? 'selected' : '' }}>สตูล</option>
+                                    <option value="สงขลา" {{ old('location', $trip->location) == 'สงขลา' ? 'selected' : '' }}>สงขลา</option>
+                                    <option value="ยะลา" {{ old('location', $trip->location) == 'ยะลา' ? 'selected' : '' }}>ยะลา</option>
+                                    <option value="นราธิวาส" {{ old('location', $trip->location) == 'นราธิวาส' ? 'selected' : '' }}>นราธิวาส</option>
+                                    <option value="ปัตตานี" {{ old('location', $trip->location) == 'ปัตตานี' ? 'selected' : '' }}>ปัตตานี</option>
+                                    <option value="นครราชสีมา" {{ old('location', $trip->location) == 'นครราชสีมา' ? 'selected' : '' }}>นครราชสีมา</option>
+                                    <option value="บุรีรัมย์" {{ old('location', $trip->location) == 'บุรีรัมย์' ? 'selected' : '' }}>บุรีรัมย์</option>
+                                    <option value="สุรินทร์" {{ old('location', $trip->location) == 'สุรินทร์' ? 'selected' : '' }}>สุรินทร์</option>
+                                    <option value="ศรีสะเกษ" {{ old('location', $trip->location) == 'ศรีสะเกษ' ? 'selected' : '' }}>ศรีสะเกษ</option>
+                                    <option value="อุบลราชธานี" {{ old('location', $trip->location) == 'อุบลราชธานี' ? 'selected' : '' }}>อุบลราชธานี</option>
+                                    <option value="ยโสธร" {{ old('location', $trip->location) == 'ยโสธร' ? 'selected' : '' }}>ยโสธร</option>
+                                    <option value="ชัยภูมิ" {{ old('location', $trip->location) == 'ชัยภูมิ' ? 'selected' : '' }}>ชัยภูมิ</option>
+                                    <option value="อำนาจเจริญ" {{ old('location', $trip->location) == 'อำนาจเจริญ' ? 'selected' : '' }}>อำนาจเจริญ</option>
+                                    <option value="หนองบัวลำภู" {{ old('location', $trip->location) == 'หนองบัวลำภู' ? 'selected' : '' }}>หนองบัวลำภู</option>
+                                    <option value="ขอนแก่น" {{ old('location', $trip->location) == 'ขอนแก่น' ? 'selected' : '' }}>ขอนแก่น</option>
+                                    <option value="อุดรธานี" {{ old('location', $trip->location) == 'อุดรธานี' ? 'selected' : '' }}>อุดรธานี</option>
+                                    <option value="เลย" {{ old('location', $trip->location) == 'เลย' ? 'selected' : '' }}>เลย</option>
+                                    <option value="หนองคาย" {{ old('location', $trip->location) == 'หนองคาย' ? 'selected' : '' }}>หนองคาย</option>
+                                    <option value="มหาสารคาม" {{ old('location', $trip->location) == 'มหาสารคาม' ? 'selected' : '' }}>มหาสารคาม</option>
+                                    <option value="ร้อยเอ็ด" {{ old('location', $trip->location) == 'ร้อยเอ็ด' ? 'selected' : '' }}>ร้อยเอ็ด</option>
+                                    <option value="กาฬสินธุ์" {{ old('location', $trip->location) == 'กาฬสินธุ์' ? 'selected' : '' }}>กาฬสินธุ์</option>
+                                    <option value="สกลนคร" {{ old('location', $trip->location) == 'สกลนคร' ? 'selected' : '' }}>สกลนคร</option>
+                                    <option value="นครพนม" {{ old('location', $trip->location) == 'นครพนม' ? 'selected' : '' }}>นครพนม</option>
+                                    <option value="มุกดาหาร" {{ old('location', $trip->location) == 'มุกดาหาร' ? 'selected' : '' }}>มุกดาหาร</option>
+                                </select>
+                                @error('location')
+                                    <label class="label">
+                                        <span class="label-text-alt text-red-500">{{ $message }}</span>
+                                    </label>
+                                @enderror
+                            </div>
+
                             <!-- รูปภาพหลัก -->
                             <div class="form-control">
                                 <label class="label">

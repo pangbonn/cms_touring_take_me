@@ -6,6 +6,7 @@ use App\Models\Trip;
 use App\Models\TripSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class TripController extends Controller
 {
@@ -54,7 +55,7 @@ class TripController extends Controller
     public function store(Request $request)
     {
         // Debug logging
-        \Log::info('Trip store method called', [
+        Log::info('Trip store method called', [
             'request_data' => $request->all(),
             'has_files' => $request->hasFile('image') || $request->hasFile('cover_image') || $request->hasFile('sample_images'),
             'files' => $request->allFiles()
@@ -63,6 +64,7 @@ class TripController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'location' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'sample_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -105,11 +107,11 @@ class TripController extends Controller
         $data['show_personal_items'] = $request->has('show_personal_items');
         $data['show_rental_equipment'] = $request->has('show_rental_equipment');
 
-        \Log::info('Creating trip with data', ['data' => $data]);
+        Log::info('Creating trip with data', ['data' => $data]);
 
         $trip = Trip::create($data);
 
-        \Log::info('Trip created successfully', ['trip_id' => $trip->id]);
+        Log::info('Trip created successfully', ['trip_id' => $trip->id]);
 
         return redirect()->route('trips.index')->with('success', 'ทริปถูกสร้างเรียบร้อยแล้ว');
     }
@@ -139,7 +141,7 @@ class TripController extends Controller
     {
         try {
             // Debug logging
-            \Log::info('Trip update method called', [
+            Log::info('Trip update method called', [
                 'trip_id' => $trip->id,
                 'request_data' => $request->all(),
                 'has_files' => $request->hasFile('image') || $request->hasFile('cover_image') || $request->hasFile('sample_images'),
@@ -149,6 +151,7 @@ class TripController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
+                'location' => 'nullable|string|max:255',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'sample_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -164,30 +167,30 @@ class TripController extends Controller
                 'show_schedule' => 'nullable|in:on',
             ]);
 
-            \Log::info('Validation passed');
+            Log::info('Validation passed');
 
             $data = $request->all();
             
             // Handle main image upload
             if ($request->hasFile('image')) {
-                \Log::info('Processing main image');
+                Log::info('Processing main image');
                 // Delete old image
                 if ($trip->image) {
                     Storage::disk('public')->delete($trip->image);
                 }
                 $data['image'] = $request->file('image')->store('trips', 'public');
-                \Log::info('Main image uploaded', ['path' => $data['image']]);
+                Log::info('Main image uploaded', ['path' => $data['image']]);
             }
             
             // Handle cover image upload
             if ($request->hasFile('cover_image')) {
-                \Log::info('Processing cover image');
+                Log::info('Processing cover image');
                 // Delete old cover image
                 if ($trip->cover_image) {
                     Storage::disk('public')->delete($trip->cover_image);
                 }
                 $data['cover_image'] = $request->file('cover_image')->store('trips', 'public');
-                \Log::info('Cover image uploaded', ['path' => $data['cover_image']]);
+                Log::info('Cover image uploaded', ['path' => $data['cover_image']]);
             }
             
             // Handle sample images upload
@@ -201,23 +204,23 @@ class TripController extends Controller
                     return !empty($image);
                 });
                 $sampleImages = array_merge($sampleImages, array_values($existingImages));
-                \Log::info('Preserving existing sample images', ['count' => count($existingImages), 'images' => $existingImages]);
+                Log::info('Preserving existing sample images', ['count' => count($existingImages), 'images' => $existingImages]);
             }
             
             // Add new uploaded images
             if ($request->hasFile('sample_images')) {
-                \Log::info('Processing new sample images');
+                Log::info('Processing new sample images');
                 
                 foreach ($request->file('sample_images') as $image) {
                     $sampleImages[] = $image->store('trips/samples', 'public');
                 }
-                \Log::info('New sample images uploaded', ['count' => count($request->file('sample_images'))]);
+                Log::info('New sample images uploaded', ['count' => count($request->file('sample_images'))]);
             }
             
             // Only update sample_images if we have any images
             if (!empty($sampleImages)) {
                 $data['sample_images'] = $sampleImages;
-                \Log::info('Total sample images after processing', ['count' => count($sampleImages)]);
+                Log::info('Total sample images after processing', ['count' => count($sampleImages)]);
             }
             
             // Set values for show fields - convert checkbox values to boolean
@@ -227,16 +230,16 @@ class TripController extends Controller
             $data['show_rental_equipment'] = $request->has('show_rental_equipment') ? true : false;
             $data['show_schedule'] = $request->has('show_schedule') ? true : false;
 
-            \Log::info('Updating trip with data', ['data' => $data]);
+            Log::info('Updating trip with data', ['data' => $data]);
 
             $trip->update($data);
 
-            \Log::info('Trip updated successfully', ['trip_id' => $trip->id]);
+            Log::info('Trip updated successfully', ['trip_id' => $trip->id]);
 
             return redirect()->route('trips.index')->with('success', 'ทริปถูกอัปเดตเรียบร้อยแล้ว');
             
         } catch (\Exception $e) {
-            \Log::error('Trip update failed', [
+            Log::error('Trip update failed', [
                 'trip_id' => $trip->id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()

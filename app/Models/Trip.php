@@ -10,6 +10,7 @@ class Trip extends Model
     protected $fillable = [
         'name',
         'description',
+        'location',
         'image',
         'cover_image',
         'sample_images',

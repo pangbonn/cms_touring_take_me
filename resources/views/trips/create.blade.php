@@ -49,18 +49,120 @@
                             @enderror
                         </div>
 
+                        <!-- จังหวัด -->
+                        <div class="form-control md:col-span-2">
+                            <label class="label">
+                                <span class="label-text font-semibold">จังหวัด</span>
+                            </label>
+                            <select name="location" class="select select-bordered @error('location') select-error @enderror">
+                                <option value="">เลือกจังหวัด</option>
+                                <option value="กรุงเทพมหานคร" {{ old('location') == 'กรุงเทพมหานคร' ? 'selected' : '' }}>กรุงเทพมหานคร</option>
+                                <option value="เชียงใหม่" {{ old('location') == 'เชียงใหม่' ? 'selected' : '' }}>เชียงใหม่</option>
+                                <option value="เชียงราย" {{ old('location') == 'เชียงราย' ? 'selected' : '' }}>เชียงราย</option>
+                                <option value="แม่ฮ่องสอน" {{ old('location') == 'แม่ฮ่องสอน' ? 'selected' : '' }}>แม่ฮ่องสอน</option>
+                                <option value="ลำปาง" {{ old('location') == 'ลำปาง' ? 'selected' : '' }}>ลำปาง</option>
+                                <option value="ลำพูน" {{ old('location') == 'ลำพูน' ? 'selected' : '' }}>ลำพูน</option>
+                                <option value="น่าน" {{ old('location') == 'น่าน' ? 'selected' : '' }}>น่าน</option>
+                                <option value="พะเยา" {{ old('location') == 'พะเยา' ? 'selected' : '' }}>พะเยา</option>
+                                <option value="แพร่" {{ old('location') == 'แพร่' ? 'selected' : '' }}>แพร่</option>
+                                <option value="อุตรดิตถ์" {{ old('location') == 'อุตรดิตถ์' ? 'selected' : '' }}>อุตรดิตถ์</option>
+                                <option value="ตาก" {{ old('location') == 'ตาก' ? 'selected' : '' }}>ตาก</option>
+                                <option value="สุโขทัย" {{ old('location') == 'สุโขทัย' ? 'selected' : '' }}>สุโขทัย</option>
+                                <option value="พิษณุโลก" {{ old('location') == 'พิษณุโลก' ? 'selected' : '' }}>พิษณุโลก</option>
+                                <option value="เพชรบูรณ์" {{ old('location') == 'เพชรบูรณ์' ? 'selected' : '' }}>เพชรบูรณ์</option>
+                                <option value="กำแพงเพชร" {{ old('location') == 'กำแพงเพชร' ? 'selected' : '' }}>กำแพงเพชร</option>
+                                <option value="นครสวรรค์" {{ old('location') == 'นครสวรรค์' ? 'selected' : '' }}>นครสวรรค์</option>
+                                <option value="อุทัยธานี" {{ old('location') == 'อุทัยธานี' ? 'selected' : '' }}>อุทัยธานี</option>
+                                <option value="ชัยนาท" {{ old('location') == 'ชัยนาท' ? 'selected' : '' }}>ชัยนาท</option>
+                                <option value="ลพบุรี" {{ old('location') == 'ลพบุรี' ? 'selected' : '' }}>ลพบุรี</option>
+                                <option value="สิงห์บุรี" {{ old('location') == 'สิงห์บุรี' ? 'selected' : '' }}>สิงห์บุรี</option>
+                                <option value="อ่างทอง" {{ old('location') == 'อ่างทอง' ? 'selected' : '' }}>อ่างทอง</option>
+                                <option value="พระนครศรีอยุธยา" {{ old('location') == 'พระนครศรีอยุธยา' ? 'selected' : '' }}>พระนครศรีอยุธยา</option>
+                                <option value="สระบุรี" {{ old('location') == 'สระบุรี' ? 'selected' : '' }}>สระบุรี</option>
+                                <option value="นครปฐม" {{ old('location') == 'นครปฐม' ? 'selected' : '' }}>นครปฐม</option>
+                                <option value="สมุทรสาคร" {{ old('location') == 'สมุทรสาคร' ? 'selected' : '' }}>สมุทรสาคร</option>
+                                <option value="สมุทรสงคราม" {{ old('location') == 'สมุทรสงคราม' ? 'selected' : '' }}>สมุทรสงคราม</option>
+                                <option value="สมุทรปราการ" {{ old('location') == 'สมุทรปราการ' ? 'selected' : '' }}>สมุทรปราการ</option>
+                                <option value="นนทบุรี" {{ old('location') == 'นนทบุรี' ? 'selected' : '' }}>นนทบุรี</option>
+                                <option value="ปทุมธานี" {{ old('location') == 'ปทุมธานี' ? 'selected' : '' }}>ปทุมธานี</option>
+                                <option value="นครนายก" {{ old('location') == 'นครนายก' ? 'selected' : '' }}>นครนายก</option>
+                                <option value="ราชบุรี" {{ old('location') == 'ราชบุรี' ? 'selected' : '' }}>ราชบุรี</option>
+                                <option value="กาญจนบุรี" {{ old('location') == 'กาญจนบุรี' ? 'selected' : '' }}>กาญจนบุรี</option>
+                                <option value="สุพรรณบุรี" {{ old('location') == 'สุพรรณบุรี' ? 'selected' : '' }}>สุพรรณบุรี</option>
+                                <option value="นครปฐม" {{ old('location') == 'นครปฐม' ? 'selected' : '' }}>นครปฐม</option>
+                                <option value="เพชรบุรี" {{ old('location') == 'เพชรบุรี' ? 'selected' : '' }}>เพชรบุรี</option>
+                                <option value="ประจวบคีรีขันธ์" {{ old('location') == 'ประจวบคีรีขันธ์' ? 'selected' : '' }}>ประจวบคีรีขันธ์</option>
+                                <option value="ชุมพร" {{ old('location') == 'ชุมพร' ? 'selected' : '' }}>ชุมพร</option>
+                                <option value="ระนอง" {{ old('location') == 'ระนอง' ? 'selected' : '' }}>ระนอง</option>
+                                <option value="สุราษฎร์ธานี" {{ old('location') == 'สุราษฎร์ธานี' ? 'selected' : '' }}>สุราษฎร์ธานี</option>
+                                <option value="นครศรีธรรมราช" {{ old('location') == 'นครศรีธรรมราช' ? 'selected' : '' }}>นครศรีธรรมราช</option>
+                                <option value="กระบี่" {{ old('location') == 'กระบี่' ? 'selected' : '' }}>กระบี่</option>
+                                <option value="พังงา" {{ old('location') == 'พังงา' ? 'selected' : '' }}>พังงา</option>
+                                <option value="ภูเก็ต" {{ old('location') == 'ภูเก็ต' ? 'selected' : '' }}>ภูเก็ต</option>
+                                <option value="ตรัง" {{ old('location') == 'ตรัง' ? 'selected' : '' }}>ตรัง</option>
+                                <option value="สตูล" {{ old('location') == 'สตูล' ? 'selected' : '' }}>สตูล</option>
+                                <option value="สงขลา" {{ old('location') == 'สงขลา' ? 'selected' : '' }}>สงขลา</option>
+                                <option value="ยะลา" {{ old('location') == 'ยะลา' ? 'selected' : '' }}>ยะลา</option>
+                                <option value="นราธิวาส" {{ old('location') == 'นราธิวาส' ? 'selected' : '' }}>นราธิวาส</option>
+                                <option value="ปัตตานี" {{ old('location') == 'ปัตตานี' ? 'selected' : '' }}>ปัตตานี</option>
+                                <option value="นครราชสีมา" {{ old('location') == 'นครราชสีมา' ? 'selected' : '' }}>นครราชสีมา</option>
+                                <option value="บุรีรัมย์" {{ old('location') == 'บุรีรัมย์' ? 'selected' : '' }}>บุรีรัมย์</option>
+                                <option value="สุรินทร์" {{ old('location') == 'สุรินทร์' ? 'selected' : '' }}>สุรินทร์</option>
+                                <option value="ศรีสะเกษ" {{ old('location') == 'ศรีสะเกษ' ? 'selected' : '' }}>ศรีสะเกษ</option>
+                                <option value="อุบลราชธานี" {{ old('location') == 'อุบลราชธานี' ? 'selected' : '' }}>อุบลราชธานี</option>
+                                <option value="ยโสธร" {{ old('location') == 'ยโสธร' ? 'selected' : '' }}>ยโสธร</option>
+                                <option value="ชัยภูมิ" {{ old('location') == 'ชัยภูมิ' ? 'selected' : '' }}>ชัยภูมิ</option>
+                                <option value="อำนาจเจริญ" {{ old('location') == 'อำนาจเจริญ' ? 'selected' : '' }}>อำนาจเจริญ</option>
+                                <option value="หนองบัวลำภู" {{ old('location') == 'หนองบัวลำภู' ? 'selected' : '' }}>หนองบัวลำภู</option>
+                                <option value="ขอนแก่น" {{ old('location') == 'ขอนแก่น' ? 'selected' : '' }}>ขอนแก่น</option>
+                                <option value="อุดรธานี" {{ old('location') == 'อุดรธานี' ? 'selected' : '' }}>อุดรธานี</option>
+                                <option value="เลย" {{ old('location') == 'เลย' ? 'selected' : '' }}>เลย</option>
+                                <option value="หนองคาย" {{ old('location') == 'หนองคาย' ? 'selected' : '' }}>หนองคาย</option>
+                                <option value="มหาสารคาม" {{ old('location') == 'มหาสารคาม' ? 'selected' : '' }}>มหาสารคาม</option>
+                                <option value="ร้อยเอ็ด" {{ old('location') == 'ร้อยเอ็ด' ? 'selected' : '' }}>ร้อยเอ็ด</option>
+                                <option value="กาฬสินธุ์" {{ old('location') == 'กาฬสินธุ์' ? 'selected' : '' }}>กาฬสินธุ์</option>
+                                <option value="สกลนคร" {{ old('location') == 'สกลนคร' ? 'selected' : '' }}>สกลนคร</option>
+                                <option value="นครพนม" {{ old('location') == 'นครพนม' ? 'selected' : '' }}>นครพนม</option>
+                                <option value="มุกดาหาร" {{ old('location') == 'มุกดาหาร' ? 'selected' : '' }}>มุกดาหาร</option>
+                                <option value="เชียงใหม่" {{ old('location') == 'เชียงใหม่' ? 'selected' : '' }}>เชียงใหม่</option>
+                                <option value="ลำพูน" {{ old('location') == 'ลำพูน' ? 'selected' : '' }}>ลำพูน</option>
+                                <option value="ลำปาง" {{ old('location') == 'ลำปาง' ? 'selected' : '' }}>ลำปาง</option>
+                                <option value="อุตรดิตถ์" {{ old('location') == 'อุตรดิตถ์' ? 'selected' : '' }}>อุตรดิตถ์</option>
+                                <option value="แพร่" {{ old('location') == 'แพร่' ? 'selected' : '' }}>แพร่</option>
+                                <option value="น่าน" {{ old('location') == 'น่าน' ? 'selected' : '' }}>น่าน</option>
+                                <option value="พะเยา" {{ old('location') == 'พะเยา' ? 'selected' : '' }}>พะเยา</option>
+                                <option value="เชียงราย" {{ old('location') == 'เชียงราย' ? 'selected' : '' }}>เชียงราย</option>
+                                <option value="แม่ฮ่องสอน" {{ old('location') == 'แม่ฮ่องสอน' ? 'selected' : '' }}>แม่ฮ่องสอน</option>
+                            </select>
+                            @error('location')
+                                <label class="label">
+                                    <span class="label-text-alt text-red-500">{{ $message }}</span>
+                                </label>
+                            @enderror
+                        </div>
+
                         <!-- รูปภาพหลัก -->
                         <div class="form-control md:col-span-2">
                             <label class="label">
                                 <span class="label-text font-semibold">รูปภาพหลัก</span>
                             </label>
                             <input type="file" name="image" class="file-input file-input-bordered w-full @error('image') file-input-error @enderror" 
-                                   accept="image/*">
+                                   accept="image/*" id="main-image-input">
+                            <div class="label">
+                                <span class="label-text-alt">รูปภาพหลักจะถูก crop เป็นสี่เหลี่ยมจัตุรัสอัตโนมัติ</span>
+                            </div>
                             @error('image')
                                 <label class="label">
                                     <span class="label-text-alt text-red-500">{{ $message }}</span>
                                 </label>
                             @enderror
+                            
+                            <!-- Main image preview -->
+                            <div id="main-image-preview" class="mt-4 hidden">
+                                <div class="aspect-square border-2 border-dashed border-gray-300 rounded-lg overflow-hidden max-w-xs">
+                                    <img id="main-preview-img" class="w-full h-full object-cover">
+                                </div>
+                            </div>
                         </div>
 
                         <!-- รูป Cover -->
@@ -316,6 +418,31 @@
     </div>
 </dialog>
 
+<!-- Main Image Crop Modal -->
+<dialog id="main-crop-modal" class="modal">
+    <div class="modal-box max-w-4xl">
+        <h3 class="font-bold text-lg mb-4">Crop รูปภาพหลัก</h3>
+        
+        <div class="flex gap-4">
+            <div class="flex-1">
+                <div id="main-cropper-container" style="max-height: 400px;">
+                    <img id="main-crop-image" style="max-width: 100%;">
+                </div>
+            </div>
+            <div class="w-32">
+                <div id="main-preview-container" class="aspect-square border border-gray-300 rounded-lg overflow-hidden">
+                    <img id="main-preview-image" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-action">
+            <button type="button" class="btn btn-ghost" onclick="cancelMainCrop()">ยกเลิก</button>
+            <button type="button" class="btn btn-primary" onclick="applyMainCrop()">ยืนยัน</button>
+        </div>
+    </div>
+</dialog>
+
 <!-- Cover Crop Modal -->
 <dialog id="cover-crop-modal" class="modal">
     <div class="modal-box max-w-4xl">
@@ -350,9 +477,23 @@
 <script>
 let cropper = null;
 let coverCropper = null;
+let mainCropper = null;
 let currentImageIndex = 0;
 let processedImages = new Array(4).fill(null);
 let processedCoverImage = null;
+let processedMainImage = null;
+
+// Main image handling
+document.getElementById('main-image-input').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            showMainCropModal(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+});
 
 // Cover image handling
 document.getElementById('cover-image-input').addEventListener('change', function(e) {
@@ -381,6 +522,35 @@ document.getElementById('hidden-file-input').addEventListener('change', function
 function selectImageForSlot(slotIndex) {
     currentImageIndex = slotIndex;
     document.getElementById('hidden-file-input').click();
+}
+
+function showMainCropModal(imageSrc) {
+    const modal = document.getElementById('main-crop-modal');
+    const cropImage = document.getElementById('main-crop-image');
+    
+    cropImage.src = imageSrc;
+    modal.showModal();
+    
+    setTimeout(() => {
+        if (mainCropper) {
+            mainCropper.destroy();
+        }
+        
+        mainCropper = new Cropper(cropImage, {
+            aspectRatio: 1, // 1:1 ratio for square crop
+            viewMode: 1,
+            dragMode: 'move',
+            autoCropArea: 0.8,
+            restore: false,
+            guides: false,
+            center: false,
+            highlight: false,
+            cropBoxMovable: true,
+            cropBoxResizable: true,
+            toggleDragModeOnDblclick: false,
+            preview: '#main-preview-image'
+        });
+    }, 100);
 }
 
 function showCoverCropModal(imageSrc) {
@@ -439,6 +609,32 @@ function showCropModal(imageSrc) {
             preview: '#preview-image'
         });
     }, 100);
+}
+
+function applyMainCrop() {
+    if (mainCropper) {
+        const canvas = mainCropper.getCroppedCanvas({
+            width: 400,
+            height: 400,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high'
+        });
+        
+        canvas.toBlob(function(blob) {
+            processedMainImage = blob;
+            
+            // Update preview
+            const previewImg = document.getElementById('main-preview-img');
+            previewImg.src = canvas.toDataURL();
+            document.getElementById('main-image-preview').classList.remove('hidden');
+            
+            // Close modal
+            document.getElementById('main-crop-modal').close();
+            
+            // Update file input
+            updateMainFileInput();
+        }, 'image/jpeg', 0.9);
+    }
 }
 
 function applyCoverCrop() {
@@ -529,6 +725,16 @@ function removeSampleImage(index) {
     updateFileInput();
 }
 
+function cancelMainCrop() {
+    document.getElementById('main-crop-modal').close();
+    if (mainCropper) {
+        mainCropper.destroy();
+        mainCropper = null;
+    }
+    // Reset file input
+    document.getElementById('main-image-input').value = '';
+}
+
 function cancelCoverCrop() {
     document.getElementById('cover-crop-modal').close();
     if (coverCropper) {
@@ -547,6 +753,15 @@ function cancelCrop() {
     }
     // Reset hidden file input
     document.getElementById('hidden-file-input').value = '';
+}
+
+function updateMainFileInput() {
+    if (processedMainImage) {
+        const dt = new DataTransfer();
+        const file = new File([processedMainImage], `main_${Date.now()}.jpg`, { type: 'image/jpeg' });
+        dt.items.add(file);
+        document.getElementById('main-image-input').files = dt.files;
+    }
 }
 
 function updateCoverFileInput() {
@@ -641,6 +856,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update file inputs if needed
         try {
             updateFileInput();
+            updateMainFileInput();
             updateCoverFileInput();
             console.log('File inputs updated');
         } catch (error) {
